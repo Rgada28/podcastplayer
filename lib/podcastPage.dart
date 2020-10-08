@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:podcastplayer/episodePage.dart';
 import 'dart:convert';
 
 class PodcastPage extends StatefulWidget {
@@ -37,7 +38,14 @@ class _PodcastPageState extends State<PodcastPage> {
                 return Column(
                   children: <Widget>[
                     ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        var route = MaterialPageRoute(
+                          builder: (BuildContext context) => EpisodePage(
+                            episodeUrl: "",
+                          ),
+                        );
+                        Navigator.of(context).push(route);
+                      },
                       title: Text(data["body"]["audio_clips"][index]["title"]),
                     )
                   ],

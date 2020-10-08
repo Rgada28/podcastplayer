@@ -50,25 +50,15 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).push(route);
                       },
                       child: Card(
-                        // child: Image.network(
-                        //   results.items.elementAt(index).artworkUrl600,
-                        //   fit: BoxFit.fill,
-                        // ),
                         child: Image.network(data["body"][index]["urls"]
                             ["logo_image"]["original"]),
                         elevation: 5,
                         margin: EdgeInsets.all(30),
-                        //  ListTile(
-                        //   title: Text(data[index]["title"]),
-                        //   leading: Image.network(data[index]["thumbnailUrl"]),
-                        //   onTap: () {},
-                        // ),
                       ),
                     ),
                   ],
                 );
               },
-              // itemCount: results.items.length,
               itemCount: data["body"].length,
             )
           : Center(
