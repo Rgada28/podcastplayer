@@ -1,24 +1,53 @@
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
+import 'package:audioplayers/audioplayers.dart';
 
 class EpisodePage extends StatefulWidget {
   final episodeUrl;
   final episodeImage;
-  EpisodePage({Key key, this.episodeUrl, this.episodeImage}) : super(key: key);
+  final episodeTitle;
+  EpisodePage({Key key, this.episodeUrl, this.episodeImage, this.episodeTitle})
+      : super(key: key);
 
   @override
   _EpisodePageState createState() => _EpisodePageState();
 }
 
 class _EpisodePageState extends State<EpisodePage> {
+  AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+
+  void _play() {
+    _audioPlayer.play(widget.episodeUrl);
+  }
+
+  void _stop() {
+    _audioPlayer.pause();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: Row(
+      child: Column(
         children: <Widget>[
-          Image.network(""),
-          IconButton(icon: Icon(Icons.play_arrow), onPressed: () {})
+          Image.network(
+            widget.episodeImage,
+            height: 600,
+            width: 600,
+          ),
+          Text(widget.episodeTitle),
+          IconButton(
+              icon: _isPlaying ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+              onPressed: () async {
+                if (_isPlaying) {
+                  _stop();
+                } else {
+                  _play();
+                }
+                setState(() {
+                  _isPlaying = !_isPlaying;
+                });
+              })
         ],
       ),
     ));

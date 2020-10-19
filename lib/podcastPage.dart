@@ -37,16 +37,31 @@ class _PodcastPageState extends State<PodcastPage> {
               itemBuilder: (context, index) {
                 return Column(
                   children: <Widget>[
-                    ListTile(
-                      onTap: () {
-                        var route = MaterialPageRoute(
-                          builder: (BuildContext context) => EpisodePage(
-                            episodeUrl: "",
-                          ),
-                        );
-                        Navigator.of(context).push(route);
-                      },
-                      title: Text(data["body"]["audio_clips"][index]["title"]),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        onTap: () {
+                          var route = MaterialPageRoute(
+                            builder: (BuildContext context) => EpisodePage(
+                              episodeUrl: data["body"]["audio_clips"][index]
+                                  ["urls"]["high_mp3"],
+                              episodeImage: data["body"]["audio_clips"][index]
+                                  ["urls"]["image"],
+                              episodeTitle: data["body"]["audio_clips"][index]
+                                  ["title"],
+                            ),
+                          );
+                          Navigator.of(context).push(route);
+                        },
+                        leading: Image(
+                          image: NetworkImage(data["body"]["audio_clips"][index]
+                              ["urls"]["image"]),
+                          height: 100,
+                          width: 100,
+                        ),
+                        title:
+                            Text(data["body"]["audio_clips"][index]["title"]),
+                      ),
                     )
                   ],
                 );
