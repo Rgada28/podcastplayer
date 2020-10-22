@@ -50,9 +50,12 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).push(route);
                       },
                       child: Card(
-                        child: Image.network(data["body"][index]["urls"]
-                            ["logo_image"]["original"]),
-                        elevation: 5,
+                        child: Image.network(
+                          data["body"][index]["urls"]["logo_image"]["original"],
+                          cacheHeight: 265,
+                          cacheWidth: 265,
+                        ),
+                        elevation: 20,
                         margin: EdgeInsets.all(30),
                       ),
                     ),

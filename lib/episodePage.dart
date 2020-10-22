@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:podcastplayer/player.dart';
 
 class EpisodePage extends StatefulWidget {
   final episodeUrl;
@@ -13,42 +13,37 @@ class EpisodePage extends StatefulWidget {
 }
 
 class _EpisodePageState extends State<EpisodePage> {
-  AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = false;
-
-  void _play() {
-    _audioPlayer.play(widget.episodeUrl);
-  }
-
-  void _stop() {
-    _audioPlayer.pause();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Column(
-        children: <Widget>[
-          Image.network(
-            widget.episodeImage,
-            height: 600,
-            width: 600,
-          ),
-          Text(widget.episodeTitle),
-          IconButton(
-              icon: _isPlaying ? Icon(Icons.pause) : Icon(Icons.play_arrow),
-              onPressed: () async {
-                if (_isPlaying) {
-                  _stop();
-                } else {
-                  _play();
-                }
-                setState(() {
-                  _isPlaying = !_isPlaying;
-                });
-              })
-        ],
+        body: SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 100,
+            ),
+            Card(
+              child: Image.network(
+                widget.episodeImage,
+                height: 360,
+                width: 360,
+                fit: BoxFit.fill,
+              ),
+              elevation: 20,
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text(widget.episodeTitle),
+            SizedBox(
+              height: 50,
+            ),
+            Player(
+              episodeUrl: widget.episodeUrl,
+            ),
+          ],
+        ),
       ),
     ));
   }
