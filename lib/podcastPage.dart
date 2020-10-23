@@ -54,8 +54,12 @@ class _PodcastPageState extends State<PodcastPage> {
                           Navigator.of(context).push(route);
                         },
                         leading: Image(
-                          image: NetworkImage(data["body"]["audio_clips"][index]
-                              ["urls"]["image"]),
+                          image: (data["body"]["audio_clips"][index]["urls"]
+                                      ["image"] ==
+                                  null)
+                              ? AssetImage('Asset/download.png')
+                              : NetworkImage(data["body"]["audio_clips"][index]
+                                  ["urls"]["image"]),
                           height: 100,
                           width: 100,
                         ),

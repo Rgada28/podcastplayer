@@ -14,6 +14,8 @@ class _PlayerState extends State<Player> {
   Duration _position = new Duration();
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
+  String currentTime = "00:00";
+  String totalTime = "00:00";
 
   @override
   void initState() {
@@ -25,24 +27,31 @@ class _PlayerState extends State<Player> {
     advancedPlayer = new AudioPlayer(playerId: 'my_unique_playerId');
     audioCache = new AudioCache(fixedPlayer: advancedPlayer);
 
-    advancedPlayer.onDurationChanged.listen((Duration d) {
-      print('Max duration: $d');
-      setState(() => _duration = d);
-    });
+    advancedPlayer.onAudioPositionChanged.listen((Duration p) => {
+          setState(() => _position = p),
+        });
 
-    advancedPlayer.onAudioPositionChanged.listen((Duration p) =>
-        {print('Current position: $p'), setState(() => _position = p)});
+    advancedPlayer.onDurationChanged.listen((Duration d) {
+      setState(() {
+        _duration = d;
+        currentTime = _position.inMinutes.toString() +
+            ":" +
+            (_position.inSeconds % 60).toString();
+        totalTime = _duration.inMinutes.toString() +
+            ":" +
+            ((_duration.inSeconds % 60) - 1).toString();
+      });
+    });
   }
 
-  AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
 
   void _play() {
-    _audioPlayer.play(widget.episodeUrl);
+    advancedPlayer.play(widget.episodeUrl);
   }
 
   void _stop() {
-    _audioPlayer.pause();
+    advancedPlayer.pause();
   }
 
   @override
@@ -58,7 +67,10 @@ class _PlayerState extends State<Player> {
                     Icons.replay_10_rounded,
                   ),
                   iconSize: 45,
-                  onPressed: () {}),
+                  onPressed: () async {
+                    await advancedPlayer.seek(
+                        Duration(seconds: _position.inSeconds.toInt() - 10));
+                  }),
               SizedBox(
                 width: 20,
               ),
@@ -67,6 +79,7 @@ class _PlayerState extends State<Player> {
                       ? Icons.pause_circle_filled
                       : Icons.play_circle_fill),
                   iconSize: 45,
+                  color: Colors.blue[600],
                   onPressed: () async {
                     if (_isPlaying) {
                       _stop();
@@ -74,6 +87,7 @@ class _PlayerState extends State<Player> {
                       _play();
                     }
                     setState(() {
+                      // advancedPlayer.setReleaseMode(ReleaseMode.STOP);
                       _isPlaying = !_isPlaying;
                     });
                   }),
@@ -82,18 +96,40 @@ class _PlayerState extends State<Player> {
               ),
               IconButton(
                   icon: Icon(
-                    Icons.forward_30_outlined,
+                    Icons.forward_10_outlined,
                   ),
                   iconSize: 45,
-                  onPressed: () {}),
+                  onPressed: () async {
+                    await advancedPlayer.seek(
+                        Duration(seconds: _position.inSeconds.toInt() + 10));
+                  }),
             ],
           ),
           Slider(
-            value: 50,
-            onChanged: (null),
+            value: _position.inSeconds.toDouble(),
+            label: currentTime,
+            onChanged: (double value) {
+              setState(() {
+                advancedPlayer.seek(Duration(seconds: value.toInt()));
+              });
+            },
             min: 0,
-            max: 100,
+            max: _duration.inSeconds.toDouble(),
+            activeColor: Colors.blue[600],
+            inactiveColor: Colors.black,
           ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 20,
+              ),
+              Text(currentTime),
+              SizedBox(
+                width: 280,
+              ),
+              Text(totalTime),
+            ],
+          )
         ]),
       ),
     );
