@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:podcastplayer/player.dart';
+import 'package:podcastplayer/widget/player.dart';
 
 class EpisodePage extends StatefulWidget {
   final episodeUrl;

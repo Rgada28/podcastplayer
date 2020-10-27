@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:podcastplayer/episodePage.dart';
+import 'package:podcastplayer/pages/episodePage.dart';
 import 'dart:convert';
 
 class PodcastPage extends StatefulWidget {
@@ -23,6 +23,7 @@ class _PodcastPageState extends State<PodcastPage> {
   fetchData() async {
     var res = await http.get(widget.feedUrl);
     data = jsonDecode(res.body);
+    // print(data["body"]["audio_clips"]);
     setState(() {});
   }
 
@@ -35,11 +36,15 @@ class _PodcastPageState extends State<PodcastPage> {
       body: data != null
           ? ListView.builder(
               itemBuilder: (context, index) {
-                return Column(
+                return
+                    // data["body"]["audio_clips"].toString() == null
+                    //     ? Text("Some text") :
+                    Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: ListTile(
+                        tileColor: Colors.black,
                         onTap: () {
                           var route = MaterialPageRoute(
                             builder: (BuildContext context) => EpisodePage(
@@ -58,13 +63,18 @@ class _PodcastPageState extends State<PodcastPage> {
                                       ["image"] ==
                                   null)
                               ? AssetImage('Asset/download.png')
-                              : NetworkImage(data["body"]["audio_clips"][index]
-                                  ["urls"]["image"]),
+                              : NetworkImage(
+                                  data["body"]["audio_clips"][index]["urls"]
+                                      ["image"],
+                                ),
                           height: 100,
                           width: 100,
+                          alignment: Alignment.topLeft,
                         ),
-                        title:
-                            Text(data["body"]["audio_clips"][index]["title"]),
+                        title: Text(
+                          data["body"]["audio_clips"][index]["title"],
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     )
                   ],
