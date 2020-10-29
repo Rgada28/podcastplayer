@@ -59,6 +59,34 @@ class _PlayerState extends State<Player> {
     return Container(
       child: SingleChildScrollView(
         child: Column(children: <Widget>[
+          Slider(
+            value: _position.inSeconds.toDouble(),
+            label: currentTime,
+            onChanged: (double value) {
+              setState(() {
+                advancedPlayer.seek(Duration(seconds: value.toInt()));
+              });
+            },
+            min: 0,
+            max: _duration.inSeconds.toDouble(),
+            activeColor: Colors.blue[600],
+            inactiveColor: Colors.black,
+          ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 20,
+              ),
+              Text(currentTime),
+              SizedBox(
+                width: 280,
+              ),
+              Text(totalTime),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             children: <Widget>[
               SizedBox(width: 80),
@@ -105,31 +133,6 @@ class _PlayerState extends State<Player> {
                   }),
             ],
           ),
-          Slider(
-            value: _position.inSeconds.toDouble(),
-            label: currentTime,
-            onChanged: (double value) {
-              setState(() {
-                advancedPlayer.seek(Duration(seconds: value.toInt()));
-              });
-            },
-            min: 0,
-            max: _duration.inSeconds.toDouble(),
-            activeColor: Colors.blue[600],
-            inactiveColor: Colors.black,
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 20,
-              ),
-              Text(currentTime),
-              SizedBox(
-                width: 280,
-              ),
-              Text(totalTime),
-            ],
-          )
         ]),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:podcastplayer/widget/CardList.dart';
+import 'package:podcastplayer/widget/ICardList.dart';
 import 'package:podcastplayer/widget/search_bar.dart';
 import 'podcastPage.dart';
-import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -12,21 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var url = "https://api.audioboom.com/channels/recommended";
-  var data;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  fetchData() async {
-    var res = await http.get(url);
-    data = jsonDecode(res.body);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,60 +24,70 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(height: 25.0),
               SearchBar(),
-              Container(
-                width: double.infinity,
-                height: 265,
-                margin: EdgeInsets.only(left: 18.0),
-                child: data != null
-                    ? ListView.builder(
-                        itemCount: data["body"].length,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: 200,
-                            margin: EdgeInsets.only(right: 18),
-                            child: Column(
-                              children: <Widget>[
-                                InkWell(
-                                  enableFeedback: true,
-                                  onTap: () {
-                                    var route = MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          PodcastPage(
-                                        feedUrl: data["body"][index]["urls"]
-                                                ["web_url"] +
-                                            "/audio_clips",
-                                      ),
-                                    );
-                                    Navigator.of(context).push(route);
-                                  },
-                                  child: Card(
-                                    child: Image.network(
-                                      data["body"][index]["urls"]["logo_image"]
-                                          ["original"],
-                                      cacheHeight: 265,
-                                      cacheWidth: 265,
-                                    ),
-                                    elevation: 20,
-                                    margin: EdgeInsets.all(30),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+              SizedBox(height: 25.0),
+              Text(
+                "Recomended                                          ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              CardList(
+                feedUrl: "https://api.audioboom.com/channels/recommended",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                "Business                                          ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              ICardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1321&limit=200",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                "Investing                                         ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              ICardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1412&limit=200",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                "Health & fitness                                          ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              ICardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1512&limit=200",
+                page: PodcastPage(),
               ),
             ],
           ),
         ),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.grey[200],
     );
   }
 }
