@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:podcastplayer/pages/episodePage.dart';
-import 'dart:convert';
+import 'package:podcastplayer/widget/EpisodeList.dart';
+import 'package:podcastplayer/widget/ShowInfo.dart';
+import 'package:webfeed/webfeed.dart';
 
 class PodcastPage extends StatefulWidget {
   final feedUrl;
@@ -12,7 +13,7 @@ class PodcastPage extends StatefulWidget {
 }
 
 class _PodcastPageState extends State<PodcastPage> {
-  var data;
+  RssFeed data;
 
   @override
   void initState() {
@@ -22,69 +23,33 @@ class _PodcastPageState extends State<PodcastPage> {
 
   fetchData() async {
     var res = await http.get(widget.feedUrl);
-    data = jsonDecode(res.body);
-    // print(data["body"]["audio_clips"]);
+    data = RssFeed.parse(res.body);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Podcast page"),
-      ),
-      body: data != null
-          ? ListView.builder(
-              itemBuilder: (context, index) {
-                return
-                    // data["body"]["audio_clips"].toString() == null
-                    //     ? Text("Some text") :
-                    Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: ListTile(
-                        tileColor: Colors.black,
-                        onTap: () {
-                          var route = MaterialPageRoute(
-                            builder: (BuildContext context) => EpisodePage(
-                              episodeUrl: data["body"]["audio_clips"][index]
-                                  ["urls"]["high_mp3"],
-                              episodeImage: data["body"]["audio_clips"][index]
-                                  ["urls"]["image"],
-                              episodeTitle: data["body"]["audio_clips"][index]
-                                  ["title"],
-                            ),
-                          );
-                          Navigator.of(context).push(route);
-                        },
-                        leading: Image(
-                          image: (data["body"]["audio_clips"][index]["urls"]
-                                      ["image"] ==
-                                  null)
-                              ? AssetImage('Asset/download.png')
-                              : NetworkImage(
-                                  data["body"]["audio_clips"][index]["urls"]
-                                      ["image"],
-                                ),
-                          height: 100,
-                          width: 100,
-                          alignment: Alignment.topLeft,
-                        ),
-                        title: Text(
-                          data["body"]["audio_clips"][index]["title"],
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
-              itemCount: data["body"]["audio_clips"].length,
-            )
-          : Center(
-              child: CircularProgressIndicator(),
+        appBar: AppBar(
+          backgroundColor: Colors.grey[200],
+        ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 5,
             ),
-    );
+            ShowInfo(
+              imageUrl: data.image.url,
+              description: data.description,
+              title: data.title,
+              subtitle: data.author,
+            ),
+            Expanded(
+              child: EpisodeList(
+                data: data,
+              ),
+            )
+          ],
+        ));
   }
 }

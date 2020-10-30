@@ -34,7 +34,7 @@ class _CardListState extends State<CardList> {
       margin: EdgeInsets.only(left: 18.0),
       child: data != null
           ? ListView.builder(
-              itemCount: data["body"].length,
+              itemCount: data["results"].length,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
@@ -49,8 +49,7 @@ class _CardListState extends State<CardList> {
                         onTap: () {
                           var route = MaterialPageRoute(
                             builder: (BuildContext context) => PodcastPage(
-                              feedUrl: data["body"][index]["urls"]["web_url"] +
-                                  "/audio_clips",
+                              feedUrl: data["results"][index]["feedUrl"],
                             ),
                           );
                           Navigator.of(context).push(route);
@@ -71,8 +70,8 @@ class _CardListState extends State<CardList> {
                                       borderRadius: BorderRadius.circular(25.0),
                                       image: DecorationImage(
                                           image: NetworkImage(
-                                            data["body"][index]["urls"]
-                                                ["logo_image"]["original"],
+                                            data["results"][index]
+                                                ["artworkUrl600"],
                                           ),
                                           fit: BoxFit.cover),
                                     ),
@@ -87,7 +86,7 @@ class _CardListState extends State<CardList> {
                         height: 15,
                       ),
                       Text(
-                        data["body"][index]["title"].toString(),
+                        data["results"][index]["collectionName"].toString(),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 15.0,
