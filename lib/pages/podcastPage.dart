@@ -21,6 +21,12 @@ class _PodcastPageState extends State<PodcastPage> {
     fetchData();
   }
 
+  void setErrorBuilder() {
+    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    };
+  }
+
   fetchData() async {
     var res = await http.get(widget.feedUrl);
     data = RssFeed.parse(res.body);
@@ -29,27 +35,29 @@ class _PodcastPageState extends State<PodcastPage> {
 
   @override
   Widget build(BuildContext context) {
+    setErrorBuilder();
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey[200],
-        ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 5,
+      appBar: AppBar(
+        backgroundColor: Colors.grey[200],
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          ShowInfo(
+            imageUrl: data.image.url == null ? null : data.image.url,
+            description: data.description,
+            title: data.title,
+            subtitle: data.author,
+          ),
+          Expanded(
+            child: EpisodeList(
+              data: data,
             ),
-            ShowInfo(
-              imageUrl: data.image.url,
-              description: data.description,
-              title: data.title,
-              subtitle: data.author,
-            ),
-            Expanded(
-              child: EpisodeList(
-                data: data,
-              ),
-            )
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }

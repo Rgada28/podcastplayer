@@ -97,7 +97,27 @@ class _EpisodeListState extends State<EpisodeList> {
                                     height: 17,
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      SizedBox(
+                                        width: 80,
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.download_outlined,
+                                          size: 35,
+                                        ),
+                                        onPressed: () =>
+                                            Scaffold.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                "Downloading ${widget.data.items.elementAt(index).title}",
+                                                style: TextStyle(fontSize: 16)),
+                                            duration: Duration(seconds: 3),
+                                            backgroundColor: Colors.teal,
+                                          ),
+                                        ),
+                                      ),
                                       Spacer(),
                                       OutlineButton.icon(
                                         onPressed: () {},

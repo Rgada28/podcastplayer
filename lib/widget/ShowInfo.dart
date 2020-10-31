@@ -31,7 +31,7 @@ class ShowInfo extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                     image: DecorationImage(
                         image: (imageUrl == null)
-                            ? CircularProgressIndicator()
+                            ? AssetImage("Asset/download.png")
                             : NetworkImage(imageUrl),
                         fit: BoxFit.cover),
                   ),
@@ -54,7 +54,14 @@ class ShowInfo extends StatelessWidget {
                   Row(
                     children: [
                       OutlineButton.icon(
-                        onPressed: () {},
+                        onPressed: () => Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Subscribed to : $title",
+                                style: TextStyle(fontSize: 16)),
+                            duration: Duration(seconds: 3),
+                            backgroundColor: Colors.teal,
+                          ),
+                        ),
                         icon: Icon(
                           Icons.add_box,
                           color: Colors.teal[700],
@@ -75,7 +82,17 @@ class ShowInfo extends StatelessWidget {
                             Icons.info,
                             size: 30,
                           ),
-                          onPressed: () {})
+                          onPressed: () {
+                            BottomSheet(
+                                onClosing: () {},
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 200,
+                                    width: 100,
+                                    child: Text("Works"),
+                                  );
+                                });
+                          })
                     ],
                   )
                 ],
