@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           "Podcast App",
         ),
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.teal,
       ),
       body: Container(
         child: SingleChildScrollView(

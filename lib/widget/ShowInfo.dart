@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class ShowInfo extends StatelessWidget {
   final String imageUrl;
   final String description;
   final String title;
   final String subtitle;
+  final String feedUrl;
   const ShowInfo(
-      {Key key, this.imageUrl, this.description, this.title, this.subtitle})
+      {Key key,
+      this.imageUrl,
+      this.feedUrl,
+      this.description,
+      this.title,
+      this.subtitle})
       : super(key: key);
+
+  void addSubscription() {
+    Hive.box("subscription").add(feedUrl);
+    print("Subscription added");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +66,17 @@ class ShowInfo extends StatelessWidget {
                   Row(
                     children: [
                       OutlineButton.icon(
-                        onPressed: () => Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Subscribed to : $title",
-                                style: TextStyle(fontSize: 16)),
-                            duration: Duration(seconds: 3),
-                            backgroundColor: Colors.teal,
-                          ),
-                        ),
+                        onPressed: () {
+                          Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Subscribed to : $title",
+                                  style: TextStyle(fontSize: 16)),
+                              duration: Duration(seconds: 3),
+                              backgroundColor: Colors.teal,
+                            ),
+                          );
+                          addSubscription();
+                        },
                         icon: Icon(
                           Icons.add_box,
                           color: Colors.teal[700],

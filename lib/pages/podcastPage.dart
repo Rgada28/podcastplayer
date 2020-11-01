@@ -38,7 +38,7 @@ class _PodcastPageState extends State<PodcastPage> {
     setErrorBuilder();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.teal,
       ),
       body: Column(
         children: [
@@ -50,6 +50,7 @@ class _PodcastPageState extends State<PodcastPage> {
             description: data.description,
             title: data.title,
             subtitle: data.author,
+            feedUrl: widget.feedUrl,
           ),
           Expanded(
             child: EpisodeList(
