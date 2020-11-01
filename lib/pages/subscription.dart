@@ -20,6 +20,16 @@ class _SubscriptionState extends State<Subscription> {
     print("Subscription:Length:${subs.length}");
   }
 
+  void setErrorBuilder() {
+    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+      return Container(
+        height: 200,
+        width: 200,
+        child: CircularProgressIndicator(),
+      );
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +44,11 @@ class _SubscriptionState extends State<Subscription> {
             )
           : Column(
               children: [
+                RaisedButton(
+                    child: Text("Unsubscribe from all"),
+                    onPressed: () {
+                      subs.deleteFromDisk();
+                    }),
                 Expanded(
                   child: ListView.builder(
                     itemCount: subs.length,

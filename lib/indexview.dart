@@ -30,7 +30,7 @@ class _IndexViewState extends State<IndexView> {
         backgroundColor: Colors.black,
         currentIndex: _selectedIndex,
         unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.blue[600],
+        selectedItemColor: Colors.teal,
         onTap: onTappedItem,
         items: [
           BottomNavigationBarItem(
