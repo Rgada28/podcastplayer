@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:podcastplayer/pages/episodePage.dart';
 
@@ -107,16 +110,41 @@ class _EpisodeListState extends State<EpisodeList> {
                                           Icons.download_outlined,
                                           size: 35,
                                         ),
-                                        onPressed: () =>
-                                            Scaffold.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                "Downloading ${widget.data.items.elementAt(index).title}",
-                                                style: TextStyle(fontSize: 16)),
-                                            duration: Duration(seconds: 3),
-                                            backgroundColor: Colors.teal,
-                                          ),
-                                        ),
+                                        onPressed: () async {
+                                          String snackBarText =
+                                              "Downloading ${widget.data.items.elementAt(index).title}";
+                                          final status = await Permission
+                                              .storage
+                                              .request();
+                                          if (status.isGranted) {
+                                            final dir =
+                                                await getExternalStorageDirectory();
+                                            print(dir.path);
+                                            FlutterDownloader.enqueue(
+                                                url: widget.data.items
+                                                    .elementAt(index)
+                                                    .enclosure
+                                                    .url,
+                                                savedDir: dir.path,
+                                                fileName: widget.data.items
+                                                        .elementAt(index)
+                                                        .title +
+                                                    " .mp3",
+                                                showNotification: true,
+                                                openFileFromNotification: true);
+                                          } else {
+                                            snackBarText = "Permission denied";
+                                          }
+                                          Scaffold.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(snackBarText,
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                              duration: Duration(seconds: 3),
+                                              backgroundColor: Colors.teal,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       Spacer(),
                                       OutlineButton.icon(

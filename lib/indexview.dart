@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:podcastplayer/pages/homepage.dart';
 import 'package:podcastplayer/pages/subscription.dart';
+import 'package:podcastplayer/pages/Downloads.dart';
 
 class IndexView extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class IndexView extends StatefulWidget {
 class _IndexViewState extends State<IndexView> {
   int _selectedIndex = 0;
 
-  static List<Widget> _viewList = [HomePage(), Subscription()];
+  static List<Widget> _viewList = [HomePage(), Subscription(), Download()];
   onTappedItem(int index) {
     setState(() {
       _selectedIndex = index;
@@ -39,6 +40,10 @@ class _IndexViewState extends State<IndexView> {
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.subscriptions), label: "Subscription"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.download_rounded),
+            label: "Downloads",
+          ),
         ],
       ),
     );
