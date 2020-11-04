@@ -26,10 +26,29 @@ class _ShowInfoState extends State<ShowInfo> {
     print("Subscription added");
   }
 
+  void unSubscribe() {
+    print("Before unsubscribe ${Hive.box("subscription").length}");
+    List subs = Hive.box("subscription").values.toList();
+    for (int i = 0; i < subs.length; i++) {
+      if (subs[i].contains(widget.feedUrl)) {
+        subs.removeAt(i);
+        Hive.box("subscription").deleteAt(i);
+      }
+    }
+    print("After unsubscribe ${Hive.box("subscription").length}");
+  }
+
   String info() {
     String description = widget.description.replaceAll("<p>", "");
     print(description);
     return description.replaceAll("</p>", "");
+  }
+
+  bool isSubscribed() {
+    bool subsstate = Hive.box("subscription").values.contains(widget.feedUrl);
+    print(subsstate);
+    setState(() {});
+    return subsstate;
   }
 
   @override
@@ -74,33 +93,91 @@ class _ShowInfoState extends State<ShowInfo> {
                 ),
                 Row(
                   children: [
-                    OutlineButton.icon(
-                      onPressed: () {
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Subscribed to : ${widget.title}",
-                                style: TextStyle(fontSize: 16)),
-                            duration: Duration(seconds: 3),
-                            backgroundColor: Colors.teal,
+                    isSubscribed()
+                        ? OutlineButton.icon(
+                            onPressed: () {
+                              if (isSubscribed()) {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "UnSubscribed to : ${widget.title}",
+                                        style: TextStyle(fontSize: 16)),
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                                unSubscribe();
+                              } else {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "Subscribed to : ${widget.title}",
+                                        style: TextStyle(fontSize: 16)),
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.teal,
+                                  ),
+                                );
+                                addSubscription();
+                              }
+                            },
+                            icon: Icon(
+                              Icons.done,
+                              color: Colors.teal,
+                            ),
+                            label: Text(
+                              "UnSubscribed",
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            borderSide: BorderSide(
+                              color: Colors.teal[700],
+                              width: 2,
+                            ),
+                          )
+                        : OutlineButton.icon(
+                            onPressed: () {
+                              if (isSubscribed()) {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "UnSubscribed to : ${widget.title}",
+                                        style: TextStyle(fontSize: 16)),
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                                unSubscribe();
+                              } else {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "Subscribed to : ${widget.title}",
+                                        style: TextStyle(fontSize: 16)),
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.teal,
+                                  ),
+                                );
+                                addSubscription();
+                              }
+                            },
+                            icon: Icon(
+                              Icons.add_box_rounded,
+                              color: Colors.teal[700],
+                            ),
+                            label: Text(
+                              "Subscribe",
+                              style: TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            borderSide: BorderSide(
+                              color: Colors.teal[700],
+                              width: 2,
+                            ),
                           ),
-                        );
-                        addSubscription();
-                      },
-                      icon: Icon(
-                        Icons.add_box,
-                        color: Colors.teal[700],
-                      ),
-                      label: Text(
-                        "Subscribe",
-                        style: TextStyle(color: Colors.black87, fontSize: 16),
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      borderSide: BorderSide(
-                        color: Colors.teal[700],
-                        width: 2,
-                      ),
-                    ),
                     IconButton(
                       icon: Icon(
                         Icons.info,
@@ -110,7 +187,6 @@ class _ShowInfoState extends State<ShowInfo> {
                         showModalBottomSheet(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
-                          elevation: 20,
                           context: context,
                           builder: (builder) {
                             return Container(

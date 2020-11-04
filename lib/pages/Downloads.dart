@@ -20,9 +20,10 @@ class _DownloadState extends State<Download> {
 
   @override
   void initState() {
-    super.initState();
     fetchDir();
+    setState(() {});
     initPlayer();
+    super.initState();
   }
 
   void initPlayer() {
@@ -75,8 +76,8 @@ class _DownloadState extends State<Download> {
 
   @override
   void setState(fetchDir) {
-    super.setState(fetchDir);
     fetchDir();
+    super.setState(fetchDir);
   }
 
   @override
@@ -96,6 +97,9 @@ class _DownloadState extends State<Download> {
             key: Key(_songs[index].toString()),
             onDismissed: (direction) {
               _songs.elementAt(index).delete();
+              setState(() {
+                fetchDir();
+              });
               Scaffold.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
