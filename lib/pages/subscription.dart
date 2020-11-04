@@ -13,11 +13,11 @@ class _SubscriptionState extends State<Subscription> {
   var subs;
   @override
   void initState() {
-    super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     Hive.openBox("subscription");
     subs = Hive.box("subscription");
     print("Subscription:Length:${subs.length}");
+    super.initState();
   }
 
   void setErrorBuilder() {
@@ -25,7 +25,9 @@ class _SubscriptionState extends State<Subscription> {
       return Container(
         height: 200,
         width: 200,
-        child: CircularProgressIndicator(),
+        child: Center(
+          child: Text("Not subscribed to any show "),
+        ),
       );
     };
   }
@@ -38,29 +40,35 @@ class _SubscriptionState extends State<Subscription> {
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: subs.length == 0
-          ? Center(
-              child: Text("Not subscribed to any show"),
-            )
-          : Column(
-              children: [
-                RaisedButton(
-                    child: Text("Unsubscribe from all"),
-                    onPressed: () {
-                      subs.deleteFromDisk();
-                    }),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: subs.length,
-                    itemBuilder: (context, index) {
-                      return SubsList(
-                        feedUrl: subs.getAt(index),
-                      );
-                    },
-                  ),
+      body: subs.length == null
+          ? Text("Box is not Open")
+          : subs.length == 0
+              ? Center(
+                  child: Text("Not subscribed to any show"),
+                )
+              : Column(
+                  children: [
+                    RaisedButton(
+                        child: Text("Unsubscribe from all"),
+                        onPressed: () {
+                          subs.clear();
+                          setState(() {});
+                        }),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: subs.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: SubsList(
+                              feedUrl: subs.getAt(index),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
     );
   }
 }

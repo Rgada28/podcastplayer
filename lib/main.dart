@@ -13,7 +13,6 @@ void main() async {
   Hive.init(appDocDir.path);
   await Hive.openBox("subscription");
   runApp(MaterialApp(
-    color: Colors.teal,
     home: IndexView(),
   ));
 }

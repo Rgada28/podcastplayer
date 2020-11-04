@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:podcastplayer/widget/player.dart';
 
 class Download extends StatefulWidget {
   Download({Key key}) : super(key: key);
