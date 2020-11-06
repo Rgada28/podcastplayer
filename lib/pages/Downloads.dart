@@ -21,7 +21,6 @@ class _DownloadState extends State<Download> {
   @override
   void initState() {
     fetchDir();
-    setState(() {});
     initPlayer();
     super.initState();
   }
@@ -72,12 +71,7 @@ class _DownloadState extends State<Download> {
     }
     // print(_songs);
     print(_songs.length);
-  }
-
-  @override
-  void setState(fetchDir) {
-    fetchDir();
-    super.setState(fetchDir);
+    setState(() {});
   }
 
   @override
@@ -88,67 +82,72 @@ class _DownloadState extends State<Download> {
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: ListView.builder(
-        itemCount: _songs.length,
-        itemBuilder: (context, index) {
-          var podTitle =
-              _songs.elementAt(index).toString().substring(72).split(".mp3")[0];
-          return new Dismissible(
-            key: Key(_songs[index].toString()),
-            onDismissed: (direction) {
-              _songs.elementAt(index).delete();
-              setState(() {
-                fetchDir();
-              });
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    "$podTitle is deleted",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              );
-            },
-            background: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.red,
+      body: _songs.length == 0
+          ? Center(
+              child: Text(
+                "No Downloads",
+                style: TextStyle(fontSize: 28),
               ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 20,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: ListTile(
-                        title: Text(podTitle),
-                        subtitle: Text(""),
-                        trailing: IconButton(
-                            icon: Icon(Icons.play_circle_fill),
-                            iconSize: 45,
-                            color: Colors.teal,
-                            onPressed: () async {
-                              if (_isPlaying) {
-                                _stop();
-                              } else {
-                                _play(_songs.elementAt(index).path.toString());
-                              }
-                              setState(() {
-                                _isPlaying = !_isPlaying;
-                              });
-                            }),
+            )
+          : ListView.builder(
+              itemCount: _songs.length,
+              itemBuilder: (context, index) {
+                var podTitle = _songs
+                    .elementAt(index)
+                    .toString()
+                    .substring(72)
+                    .split(".mp3")[0];
+                print("Songs length:${_songs.length}");
+                return Dismissible(
+                  key: Key(_songs[index].toString()),
+                  onDismissed: (direction) {
+                    _songs.elementAt(index).delete();
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "$podTitle is deleted",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    );
+                  },
+                  background: Card(
+                    color: Colors.red,
+                  ),
+                  child: Column(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 20,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: ListTile(
+                            title: Text(podTitle),
+                            trailing: IconButton(
+                              icon: Icon(Icons.play_circle_fill),
+                              iconSize: 45,
+                              color: Colors.teal,
+                              onPressed: () async {
+                                if (_isPlaying) {
+                                  _stop();
+                                } else {
+                                  _play(
+                                      _songs.elementAt(index).path.toString());
+                                }
+                                setState(
+                                  () {
+                                    _isPlaying = !_isPlaying;
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                  ]),
+                );
+              }),
     );
   }
 }

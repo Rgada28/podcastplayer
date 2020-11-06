@@ -40,35 +40,36 @@ class _SubscriptionState extends State<Subscription> {
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: subs.length == null
-          ? Text("Box is not Open")
-          : subs.length == 0
-              ? Center(
-                  child: Text("Not subscribed to any show"),
-                )
-              : Column(
-                  children: [
-                    RaisedButton(
-                        child: Text("Unsubscribe from all"),
-                        onPressed: () {
-                          subs.clear();
-                          setState(() {});
-                        }),
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: subs.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            child: SubsList(
-                              feedUrl: subs.getAt(index),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+      body: subs.length == 0
+          ? Center(
+              child: Text(
+                "Not subscribed to any show",
+                style: TextStyle(fontSize: 28),
+              ),
+            )
+          : Column(
+              children: [
+                RaisedButton(
+                    child: Text("Unsubscribe from all"),
+                    onPressed: () {
+                      subs.clear();
+                      setState(() {});
+                    }),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: subs.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: SubsList(
+                          feedUrl: subs.getAt(index),
+                        ),
+                      );
+                    },
+                  ),
                 ),
+              ],
+            ),
     );
   }
 }
