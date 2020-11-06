@@ -69,7 +69,7 @@ class _PlayerState extends State<Player> {
             },
             min: 0,
             max: _duration.inSeconds.toDouble(),
-            activeColor: Colors.blue[600],
+            activeColor: Colors.teal,
             inactiveColor: Colors.black,
           ),
           Row(
@@ -83,9 +83,6 @@ class _PlayerState extends State<Player> {
               ),
               Text(totalTime),
             ],
-          ),
-          SizedBox(
-            height: 20,
           ),
           Row(
             children: <Widget>[
@@ -107,7 +104,7 @@ class _PlayerState extends State<Player> {
                       ? Icons.pause_circle_filled
                       : Icons.play_circle_fill),
                   iconSize: 45,
-                  color: Colors.blue[600],
+                  color: Colors.teal,
                   onPressed: () async {
                     if (_isPlaying) {
                       _stop();

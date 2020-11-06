@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:podcastplayer/widget/player.dart';
 
 class Download extends StatefulWidget {
   Download({Key key}) : super(key: key);
@@ -128,17 +129,47 @@ class _DownloadState extends State<Download> {
                               iconSize: 45,
                               color: Colors.teal,
                               onPressed: () async {
-                                if (_isPlaying) {
-                                  _stop();
-                                } else {
-                                  _play(
-                                      _songs.elementAt(index).path.toString());
-                                }
-                                setState(
-                                  () {
-                                    _isPlaying = !_isPlaying;
+                                showModalBottomSheet(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container(
+                                      height: 200,
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            podTitle,
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Player(
+                                            episodeUrl: _songs
+                                                .elementAt(index)
+                                                .path
+                                                .toString(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 );
+                                // if (_isPlaying) {
+                                //   _stop();
+                                // } else {
+                                //   _play(
+                                //       _songs.elementAt(index).path.toString());
+                                // }
+                                // setState(
+                                //   () {
+                                //     _isPlaying = !_isPlaying;
+                                //   },
+                                // );
                               },
                             ),
                           ),

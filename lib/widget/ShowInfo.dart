@@ -144,7 +144,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                     content: Text(
                                         "UnSubscribed to : ${widget.title}",
                                         style: TextStyle(fontSize: 16)),
-                                    duration: Duration(seconds: 3),
+                                    duration: Duration(seconds: 2),
                                     backgroundColor: Colors.red,
                                   ),
                                 );
@@ -155,7 +155,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                     content: Text(
                                         "Subscribed to : ${widget.title}",
                                         style: TextStyle(fontSize: 16)),
-                                    duration: Duration(seconds: 3),
+                                    duration: Duration(seconds: 2),
                                     backgroundColor: Colors.teal,
                                   ),
                                 );
@@ -186,32 +186,39 @@ class _ShowInfoState extends State<ShowInfo> {
                       onPressed: () {
                         showModalBottomSheet(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
                           context: context,
                           builder: (builder) {
                             return Container(
                               height: 350,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    widget.title,
-                                    style: TextStyle(fontSize: 24),
-                                  ),
-                                  Divider(
-                                    color: Colors.black,
-                                    thickness: 2,
-                                  ),
-                                  Text(
-                                    "Shows description",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Center(
-                                    child: Text(
-                                      info(),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Text(
+                                      widget.title,
+                                      style: TextStyle(fontSize: 24),
+                                    ),
+                                    Divider(
+                                      color: Colors.black,
+                                      thickness: 2,
+                                    ),
+                                    Text(
+                                      "Shows description",
                                       style: TextStyle(fontSize: 16),
                                     ),
-                                  ),
-                                ],
+                                    Center(
+                                      child: Text(
+                                        info(),
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
