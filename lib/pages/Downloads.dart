@@ -129,13 +129,13 @@ class _DownloadState extends State<Download> {
                               iconSize: 45,
                               color: Colors.teal,
                               onPressed: () async {
-                                showModalBottomSheet(
+                                showBottomSheet(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
                                   context: context,
                                   builder: (builder) {
                                     return Container(
-                                      height: 200,
+                                      height: 250,
                                       child: Column(
                                         children: <Widget>[
                                           SizedBox(
@@ -159,17 +159,6 @@ class _DownloadState extends State<Download> {
                                     );
                                   },
                                 );
-                                // if (_isPlaying) {
-                                //   _stop();
-                                // } else {
-                                //   _play(
-                                //       _songs.elementAt(index).path.toString());
-                                // }
-                                // setState(
-                                //   () {
-                                //     _isPlaying = !_isPlaying;
-                                //   },
-                                // );
                               },
                             ),
                           ),

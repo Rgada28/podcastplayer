@@ -152,16 +152,16 @@ class _EpisodeListState extends State<EpisodeList> {
                                                         .itunes
                                                         .image
                                                         .href,
-                                                    width: 260,
-                                                    height: 260,
+                                                    width: 200,
+                                                    height: 200,
                                                   ),
                                                   SizedBox(
                                                     height: 10,
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                        const EdgeInsets.only(
+                                                            left: 30, top: 8.0),
                                                     child: Text(widget
                                                         .data.items
                                                         .elementAt(index)

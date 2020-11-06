@@ -16,6 +16,7 @@ class _PlayerState extends State<Player> {
   AudioCache audioCache;
   String currentTime = "00:00";
   String totalTime = "00:00";
+  String playbackSpeed = "1x";
 
   @override
   void initState() {
@@ -130,8 +131,85 @@ class _PlayerState extends State<Player> {
                   }),
             ],
           ),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 10,
+              ),
+              OutlineButton(
+                  color: Colors.white,
+                  borderSide: BorderSide(width: 3, style: BorderStyle.solid),
+                  child: Text(playbackSpeed),
+                  onPressed: () {
+                    showMenu<FlatButton>(
+                      context: context,
+                      position: buttonMenuPosition(context),
+                      items: <PopupMenuItem<FlatButton>>[
+                        new PopupMenuItem<FlatButton>(
+                          child: FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  playbackSpeed = "0.5x";
+                                });
+                                advancedPlayer.setPlaybackRate(
+                                    playbackRate: 0.5);
+                              },
+                              child: Text("0.5x")),
+                        ),
+                        new PopupMenuItem<FlatButton>(
+                          child: FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  playbackSpeed = "1x";
+                                });
+                                advancedPlayer.setPlaybackRate(
+                                    playbackRate: 1.0);
+                              },
+                              child: Text("1x")),
+                        ),
+                        new PopupMenuItem<FlatButton>(
+                          child: FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  playbackSpeed = "1.5x";
+                                });
+                                advancedPlayer.setPlaybackRate(
+                                    playbackRate: 1.5);
+                              },
+                              child: Text("1.5x")),
+                        ),
+                        new PopupMenuItem<FlatButton>(
+                          child: FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  playbackSpeed = "2x";
+                                });
+                                advancedPlayer.setPlaybackRate(
+                                    playbackRate: 2.0);
+                              },
+                              child: Text("2x")),
+                        ),
+                      ],
+                      elevation: 8.0,
+                    );
+                  })
+            ],
+          )
         ]),
       ),
     );
   }
+}
+
+RelativeRect buttonMenuPosition(BuildContext c) {
+  final RenderBox bar = c.findRenderObject();
+  final RenderBox overlay = Overlay.of(c).context.findRenderObject();
+  final RelativeRect position = RelativeRect.fromRect(
+    Rect.fromPoints(
+      bar.localToGlobal(bar.size.bottomLeft(Offset.zero), ancestor: overlay),
+      bar.localToGlobal(bar.size.bottomCenter(Offset.zero), ancestor: overlay),
+    ),
+    Offset.zero & overlay.size,
+  );
+  return position;
 }
