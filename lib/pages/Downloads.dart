@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:podcastplayer/widget/player.dart';
 
 class Download extends StatefulWidget {
@@ -13,47 +12,10 @@ class Download extends StatefulWidget {
 }
 
 class _DownloadState extends State<Download> {
-  Duration _duration = new Duration();
-  Duration _position = new Duration();
-  AudioPlayer advancedPlayer;
-  String currentTime = "00:00";
-  String totalTime = "00:00";
-
   @override
   void initState() {
     fetchDir();
-    initPlayer();
     super.initState();
-  }
-
-  void initPlayer() {
-    advancedPlayer = new AudioPlayer();
-
-    advancedPlayer.onAudioPositionChanged.listen((Duration p) => {
-          setState(() => _position = p),
-        });
-
-    advancedPlayer.onDurationChanged.listen((Duration d) {
-      setState(() {
-        _duration = d;
-        currentTime = _position.inMinutes.toString() +
-            ":" +
-            (_position.inSeconds % 60).toString();
-        totalTime = _duration.inMinutes.toString() +
-            ":" +
-            ((_duration.inSeconds % 60) - 1).toString();
-      });
-    });
-  }
-
-  bool _isPlaying = false;
-
-  void _play(String url) {
-    advancedPlayer.play(url, isLocal: true);
-  }
-
-  void _stop() {
-    advancedPlayer.pause();
   }
 
   List<FileSystemEntity> _songs = [];
@@ -131,10 +93,13 @@ class _DownloadState extends State<Download> {
                               onPressed: () async {
                                 showBottomSheet(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(30))),
                                   context: context,
                                   builder: (builder) {
                                     return Container(
+                                      color: Colors.teal[200],
                                       height: 250,
                                       child: Column(
                                         children: <Widget>[
