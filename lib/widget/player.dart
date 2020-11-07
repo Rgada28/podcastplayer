@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audio_cache.dart';
 
 class Player extends StatefulWidget {
   final episodeUrl;
@@ -13,7 +12,6 @@ class _PlayerState extends State<Player> {
   Duration _duration = new Duration();
   Duration _position = new Duration();
   AudioPlayer advancedPlayer;
-  AudioCache audioCache;
   String currentTime = "00:00";
   String totalTime = "00:00";
   String playbackSpeed = "1x";
@@ -26,7 +24,6 @@ class _PlayerState extends State<Player> {
 
   void initPlayer() {
     advancedPlayer = new AudioPlayer(playerId: 'my_unique_playerId');
-    audioCache = new AudioCache(fixedPlayer: advancedPlayer);
 
     advancedPlayer.onAudioPositionChanged.listen((Duration p) => {
           setState(() => _position = p),

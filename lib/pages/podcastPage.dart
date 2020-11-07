@@ -46,7 +46,8 @@ class _PodcastPageState extends State<PodcastPage> {
             height: 5,
           ),
           ShowInfo(
-            imageUrl: data.image.url == null ? null : data.image.url,
+            imageUrl:
+                data.image.url == null ? "Asset/download.png" : data.image.url,
             description: data.description,
             title: data.title,
             subtitle: data.author,
