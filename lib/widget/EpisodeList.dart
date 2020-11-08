@@ -134,7 +134,7 @@ class _EpisodeListState extends State<EpisodeList> {
                                   context: context,
                                   builder: (builder) {
                                     return Container(
-                                      height: 500,
+                                      height: 450,
                                       child: Column(
                                         children: <Widget>[
                                           SizedBox(

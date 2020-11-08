@@ -56,7 +56,8 @@ class _PlayerState extends State<Player> {
   Widget build(BuildContext context) {
     return Container(
       child: SingleChildScrollView(
-        child: Column(children: <Widget>[
+          child: Column(
+        children: <Widget>[
           Slider(
             value: _position.inSeconds.toDouble(),
             label: currentTime,
@@ -82,61 +83,15 @@ class _PlayerState extends State<Player> {
               Text(totalTime),
             ],
           ),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 80),
-              IconButton(
-                  icon: Icon(
-                    Icons.replay_10_rounded,
-                  ),
-                  iconSize: 45,
-                  onPressed: () async {
-                    await advancedPlayer.seek(
-                        Duration(seconds: _position.inSeconds.toInt() - 10));
-                  }),
-              SizedBox(
-                width: 20,
-              ),
-              IconButton(
-                  icon: Icon(_isPlaying
-                      ? Icons.pause_circle_filled
-                      : Icons.play_circle_fill),
-                  iconSize: 45,
-                  color: Colors.teal,
-                  onPressed: () async {
-                    if (_isPlaying) {
-                      _stop();
-                    } else {
-                      _play();
-                    }
-                    setState(() {
-                      // advancedPlayer.setReleaseMode(ReleaseMode.STOP);
-                      _isPlaying = !_isPlaying;
-                    });
-                  }),
-              SizedBox(
-                width: 20,
-              ),
-              IconButton(
-                  icon: Icon(
-                    Icons.forward_10_outlined,
-                  ),
-                  iconSize: 45,
-                  onPressed: () async {
-                    await advancedPlayer.seek(
-                        Duration(seconds: _position.inSeconds.toInt() + 10));
-                  }),
-            ],
+          SizedBox(
+            height: 5,
           ),
           Row(
             children: <Widget>[
-              SizedBox(
-                width: 10,
-              ),
-              OutlineButton(
-                  color: Colors.white,
-                  borderSide: BorderSide(width: 3, style: BorderStyle.solid),
-                  child: Text(playbackSpeed),
+              FlatButton(
+                  child: Text(playbackSpeed,
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     showMenu<FlatButton>(
                       context: context,
@@ -187,18 +142,74 @@ class _PlayerState extends State<Player> {
                               child: Text("2x")),
                         ),
                       ],
-                      elevation: 8.0,
                     );
-                  })
+                  }),
+              IconButton(
+                  icon: Icon(
+                    Icons.replay_10_rounded,
+                  ),
+                  iconSize: 45,
+                  onPressed: () async {
+                    await advancedPlayer.seek(
+                        Duration(seconds: _position.inSeconds.toInt() - 10));
+                  }),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                  icon: Icon(advancedPlayer.state == AudioPlayerState.PLAYING
+                      ? Icons.pause_circle_filled
+                      : Icons.play_circle_fill),
+                  iconSize: 45,
+                  color: Colors.teal,
+                  onPressed: () async {
+                    if (_isPlaying) {
+                      _stop();
+                    } else {
+                      _play();
+                    }
+                    setState(() {
+                      // advancedPlayer.setReleaseMode(ReleaseMode.STOP);
+                      _isPlaying = !_isPlaying;
+                    });
+                  }),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.forward_10_outlined,
+                  ),
+                  iconSize: 45,
+                  onPressed: () async {
+                    await advancedPlayer.seek(
+                        Duration(seconds: _position.inSeconds.toInt() + 10));
+                  }),
             ],
-          )
-        ]),
-      ),
+          ),
+          SizedBox(
+            width: 80,
+          ),
+        ],
+      )),
     );
   }
 }
 
 RelativeRect buttonMenuPosition(BuildContext c) {
+  final RenderBox bar = c.findRenderObject();
+  final RenderBox overlay = Overlay.of(c).context.findRenderObject();
+  final RelativeRect position = RelativeRect.fromRect(
+    Rect.fromPoints(
+      bar.localToGlobal(bar.size.bottomLeft(Offset.zero), ancestor: overlay),
+      bar.localToGlobal(bar.size.bottomCenter(Offset.zero), ancestor: overlay),
+    ),
+    Offset.zero & overlay.size,
+  );
+  return position;
+}
+
+RelativeRect bottomSlider(BuildContext c) {
   final RenderBox bar = c.findRenderObject();
   final RenderBox overlay = Overlay.of(c).context.findRenderObject();
   final RelativeRect position = RelativeRect.fromRect(

@@ -100,7 +100,7 @@ class _DownloadState extends State<Download> {
                                   builder: (builder) {
                                     return Container(
                                       color: Colors.teal[200],
-                                      height: 250,
+                                      height: 200,
                                       child: Column(
                                         children: <Widget>[
                                           SizedBox(
