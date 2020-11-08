@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 25.0),
               SearchBar(),
               SizedBox(height: 25.0),
-              SizedBox(height: 10.0),
               Text(
                 "Business                                          ",
                 textAlign: TextAlign.left,
@@ -40,6 +39,21 @@ class _HomePageState extends State<HomePage> {
               CardList(
                 feedUrl:
                     "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1321&limit=200",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 25.0),
+              Text(
+                "Places & Travel                                  ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              CardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1320&limit=200",
                 page: PodcastPage(),
               ),
               SizedBox(height: 10.0),
