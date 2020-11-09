@@ -14,7 +14,6 @@ class PodcastPage extends StatefulWidget {
 
 class _PodcastPageState extends State<PodcastPage> {
   RssFeed data;
-  final _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -96,10 +95,10 @@ class _PodcastPageState extends State<PodcastPage> {
                       color: Colors.white,
                     ),
                     label: Text(
-                      "Subscribe",
+                      isSubscribed() ? "Unsubscribe" : "Subscribe",
                       style: TextStyle(fontSize: 24, color: Colors.white),
                     ),
-                    color: Colors.teal,
+                    color: isSubscribed() ? Colors.red : Colors.teal,
                     onPressed: () {
                       if (isSubscribed()) {
                         unSubscribe();
@@ -111,6 +110,8 @@ class _PodcastPageState extends State<PodcastPage> {
                   Text(
                     info(),
                     style: TextStyle(fontSize: 18),
+                    maxLines: 14,
+                    overflow: TextOverflow.visible,
                   ),
                 ]),
                 SizedBox(
