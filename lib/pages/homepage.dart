@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
               SearchBar(),
               SizedBox(height: 25.0),
               Text(
-                "Business                                          ",
+                "Business                                                 ",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 20,
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 25.0),
               Text(
-                "Places & Travel                                  ",
+                "Places & Travel                                   ",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 20,
@@ -56,9 +56,23 @@ class _HomePageState extends State<HomePage> {
                     "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1320&limit=200",
                 page: PodcastPage(),
               ),
-              SizedBox(height: 10.0),
               Text(
-                "Investing                                         ",
+                "Comedy                                                 ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              CardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1303&limit=200",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 25.0),
+              Text(
+                "Investing                                                ",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 20,
@@ -71,9 +85,24 @@ class _HomePageState extends State<HomePage> {
                     "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1412&limit=200",
                 page: PodcastPage(),
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 25.0),
               Text(
-                "Health & fitness                                          ",
+                "Music                                                        ",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10.0),
+              CardList(
+                feedUrl:
+                    "https://itunes.apple.com/search?term=podcast&country=in&entity=podcast&genreId=1310&limit=200",
+                page: PodcastPage(),
+              ),
+              SizedBox(height: 25.0),
+              Text(
+                "Health & fitness                                      ",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 20,
